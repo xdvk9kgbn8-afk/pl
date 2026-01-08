@@ -9,7 +9,6 @@ _G.VehicleBoostEnabled = false
 _G.VehicleBoostMultiplier = 1
 
 RunService.Heartbeat:Connect(function(deltaTime)
-    -- Check if the boost is enabled via the global variable
     if not _G.VehicleBoostEnabled then return end
     
     local character = player.Character
@@ -20,20 +19,34 @@ RunService.Heartbeat:Connect(function(deltaTime)
     
     local seat = humanoid.SeatPart
     if seat:IsA("VehicleSeat") then
-        -- Only apply boost if the driver is actually pressing W (Throttle > 0)
-        -- We check for Throttle > 0 (Forward) or Throttle < 0 (Backward)
+        local velocity = seat.AssemblyLinearVelocity
+        local cf = seat.CFrame
+        
+        ------------------------------------------------------------
+        -- 1. LATERAL TRACTION CONTROL (Anti-Slide)
+        ------------------------------------------------------------
+        -- Calculate how much the car is moving sideways (RightVector)
+        local lateralVelocity = cf.RightVector:Dot(velocity)
+        
+        -- Apply a counter-force to cancel out the sliding.
+        -- 0.15 is a "sweet spot": it allows minor drifting but stops the ice-skating effect.
+        seat.AssemblyLinearVelocity -= cf.RightVector * (lateralVelocity * 0.2)
+
+        ------------------------------------------------------------
+        -- 2. ARTIFICIAL DOWNFORCE (Anti-Flip/Float)
+        ------------------------------------------------------------
+        -- High speeds in Roblox make cars "floaty." This nudges the car 
+        -- downward to keep the wheels touching the ground for better grip.
+        seat.AssemblyLinearVelocity -= Vector3.new(0, 0.5, 0)
+
+        ------------------------------------------------------------
+        -- 3. BOOST LOGIC
+        ------------------------------------------------------------
         if math.abs(seat.Throttle) > 0 then
-            
-            -- Direction: seat.CFrame.LookVector (Forward) 
-            -- We multiply by seat.Throttle so reversing also gets a boost
-            local direction = seat.CFrame.LookVector * seat.Throttle
-            
-            -- Apply physical velocity boost using the global multiplier
-            -- Using AssemblyLinearVelocity ensures we affect the entire connected car
+            local direction = cf.LookVector * seat.Throttle
             seat.AssemblyLinearVelocity += direction * _G.VehicleBoostMultiplier
         end
     end
 end)
 
-print("Global Vehicle Boost Loaded.")
-print("Toggle: _G.VehicleBoostEnabled | Speed: _G.VehicleBoostMultiplier")
+print("Global Vehicle Boost with Traction Control Loaded.")
