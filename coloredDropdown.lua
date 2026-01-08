@@ -15,7 +15,7 @@ local function getTeamColor(username)
     return Color3.new(1,1,1) -- default white
 end
 
--- Initial cache population
+-- Initial cache population 
 local function updateCache()
     buttonsCache = {}
     for _, desc in pairs(shamanGui:GetDescendants()) do
