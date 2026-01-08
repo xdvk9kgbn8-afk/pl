@@ -8,8 +8,6 @@ local c = workspace.CurrentCamera
 local speed = 60
 local lastUpdate = 0
 
-_G.noclipFlyEnabled = true
-
 -- Initialize the global variable
 _G.noclipFlyEnabled = _G.noclipFlyEnabled or false
 
