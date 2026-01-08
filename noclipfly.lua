@@ -1,68 +1,51 @@
--- LocalScript (Place inside StarterPlayer -> StarterPlayerScripts)
+-- LocalScript (StarterPlayerScripts)
 
 local player = game.Players.LocalPlayer
+local runService = game:GetService("RunService")
 local userInput = game:GetService("UserInputService")
-local rs = game:GetService("RunService")
-local c = workspace.CurrentCamera
+local camera = workspace.CurrentCamera
 
 local speed = 60
-local lastUpdate = 0
 
 -- Initialize the global variable
-_G.noclipFlyEnabled = _G.noclipFlyEnabled or false
+_G.noClipFly = _G.noClipFly or false
 
--- Function to handle player movement
-local function getNextMovement(deltaTime)
-    local nextMove = Vector3.new()
-
-    -- Get the camera's forward and right directions
-    local cameraCFrame = c.CFrame
-    local cameraForward = cameraCFrame.LookVector
-    local cameraRight = cameraCFrame.RightVector
-
-    -- Calculate movement direction based on the camera orientation
-    if userInput:IsKeyDown(Enum.KeyCode.W) then
-        nextMove = nextMove + cameraForward
-    end
-    if userInput:IsKeyDown(Enum.KeyCode.S) then
-        nextMove = nextMove - cameraForward
-    end
-    if userInput:IsKeyDown(Enum.KeyCode.A) then
-        nextMove = nextMove - cameraRight
-    end
-    if userInput:IsKeyDown(Enum.KeyCode.D) then
-        nextMove = nextMove + cameraRight
-    end
-
-    return nextMove * (speed * deltaTime)
+-- Movement helper
+local function getMoveVector()
+    local move = Vector3.new()
+    if userInput:IsKeyDown(Enum.KeyCode.W) then move = move + camera.CFrame.LookVector end
+    if userInput:IsKeyDown(Enum.KeyCode.S) then move = move - camera.CFrame.LookVector end
+    if userInput:IsKeyDown(Enum.KeyCode.A) then move = move - camera.CFrame.RightVector end
+    if userInput:IsKeyDown(Enum.KeyCode.D) then move = move + camera.CFrame.RightVector end
+    return move
 end
 
--- Function to enable/disable noclip fly
-local function updateNoClip()
+-- Main loop
+runService.RenderStepped:Connect(function(deltaTime)
     local char = player.Character
     if not char then return end
-    local humanoid = char:FindFirstChild("Humanoid")
     local root = char:FindFirstChild("HumanoidRootPart")
-    if not humanoid or not root then return end
+    local humanoid = char:FindFirstChild("Humanoid")
+    if not root or not humanoid then return end
 
-    if _G.noclipFlyEnabled then
+    if _G.noClipFly then
+        -- Enable noclip & flight
         humanoid.PlatformStand = true
         root.Anchored = true
+
+        -- Manual movement
+        local move = getMoveVector()
+        if move.Magnitude > 0 then
+            root.CFrame = root.CFrame + move.Unit * speed * deltaTime
+        end
+
+        -- Disable collisions safely
+        for _, part in pairs(char:GetDescendants()) do
+            pcall(function() part.CanCollide = false end)
+        end
     else
+        -- Restore normal behavior
         humanoid.PlatformStand = false
         root.Anchored = false
     end
-end
-
--- Main loop to handle movement while noclip is enabled
-rs.RenderStepped:Connect(function(deltaTime)
-    if _G.noclipFlyEnabled then
-        local char = player.Character
-        if char and char:FindFirstChild("HumanoidRootPart") then
-            local root = char.HumanoidRootPart
-            local move = getNextMovement(deltaTime)
-            root.CFrame = root.CFrame + move
-        end
-    end
-    updateNoClip()
 end)
