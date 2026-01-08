@@ -125,31 +125,31 @@ dText.Parent = dMain
     
 makefolder("Shaman")
     
-local Circle = request({Url = "https://raw.githubusercontent.com/Rain-Design/Icons/main/Circle.png", Method = "GET"})
+local Circle = request({Url = "https://raw.githubusercontent.com/xdvk9kgbn8-afk/pl/refs/heads/main/Circle.png", Method = "GET"})
 writefile("Shaman/Circle.png", Circle.Body)
 dText.Text = "Downloaded: Circle.png"
     
-local ColorDropper = request({Url = "https://raw.githubusercontent.com/Rain-Design/Icons/main/ColorDropper.png", Method = "GET"})
+local ColorDropper = request({Url = "https://raw.githubusercontent.com/xdvk9kgbn8-afk/pl/refs/heads/main/ColorDropper.png", Method = "GET"})
 writefile("Shaman/ColorDropper.png", ColorDropper.Body)
 dText.Text = "Downloaded: ColorDropper.png"
 
-local Close = request({Url = "https://raw.githubusercontent.com/Rain-Design/Icons/main/Close.png", Method = "GET"})
+local Close = request({Url = "https://raw.githubusercontent.com/xdvk9kgbn8-afk/pl/refs/heads/main/Close.png", Method = "GET"})
 writefile("Shaman/Close.png", Close.Body)
 dText.Text = "Downloaded: Close.png"
 
-local CollapseArrow = request({Url = "https://raw.githubusercontent.com/Rain-Design/Icons/main/CollapseArrow.png", Method = "GET"})
+local CollapseArrow = request({Url = "https://raw.githubusercontent.com/xdvk9kgbn8-afk/pl/refs/heads/main/CollapseArrow.png", Method = "GET"})
 writefile("Shaman/CollapseArrow.png", CollapseArrow.Body)
 dText.Text = "Downloaded: CollapseArrow.png"
     
-local RadioButton = request({Url = "https://raw.githubusercontent.com/Rain-Design/Icons/main/RadioButton.png", Method = "GET"})
+local RadioButton = request({Url = "https://raw.githubusercontent.com/xdvk9kgbn8-afk/pl/refs/heads/main/RadioButton.png", Method = "GET"})
 writefile("Shaman/RadioButton.png", RadioButton.Body)
 dText.Text = "Downloaded: RadioButton.png"
     
-local RadioOuter = request({Url = "https://raw.githubusercontent.com/Rain-Design/Icons/main/RadioOuter.png", Method = "GET"})
+local RadioOuter = request({Url = "https://raw.githubusercontent.com/xdvk9kgbn8-afk/pl/refs/heads/main/RadioOuter.png", Method = "GET"})
 writefile("Shaman/RadioOuter.png", RadioOuter.Body)
 dText.Text = "Downloaded: RadioOuter.png"
     
-local RadioInner = request({Url = "https://raw.githubusercontent.com/Rain-Design/Icons/main/RadioInner.png", Method = "GET"})
+local RadioInner = request({Url = "https://raw.githubusercontent.com/xdvk9kgbn8-afk/pl/refs/heads/main/RadioInner.png", Method = "GET"})
 writefile("Shaman/RadioInner.png", RadioInner.Body)
 dText.Text = "Downloaded: RadioInner.png"
 
