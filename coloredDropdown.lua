@@ -17,6 +17,16 @@ local function updateButtonColor(button)
     end
 end
 
+local function pulseUpdate(button) -- pretty lazy fix but it works
+    task.spawn(function()
+        local start = os.clock()
+        while os.clock() - start < 1 do
+            updateButtonColor(button)
+            task.wait(0.1)
+        end
+    end)
+end
+
 -- Add a button to cache and attach hover events
 local function addButton(button)
     if buttonsCache[button] then return end
@@ -29,6 +39,7 @@ local function addButton(button)
         end)
         button.MouseLeave:Connect(function()
             updateButtonColor(button)
+            pulseUpdate(button)
         end)
     end
 end
@@ -52,5 +63,8 @@ while true do
     for button in pairs(buttonsCache) do
         updateButtonColor(button)
     end
-    task.wait(3) -- adjust the interval as needed
+    task.wait(3)
 end
+
+
+    -- if button.Parent.Parent.DropdownIcon.Rotation == -90, then do nothing
